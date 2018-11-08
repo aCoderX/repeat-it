@@ -32,7 +32,6 @@ public class UserServiceTest {
 
     @Test
     public void sumUserNumTimeOut() throws InterruptedException {
-        System.out.println("start sumUserNumTimeOut...now sleep 2s");
         TimeUnit.SECONDS.sleep(2);
         System.out.println(userService.sumUserNum());
     }
