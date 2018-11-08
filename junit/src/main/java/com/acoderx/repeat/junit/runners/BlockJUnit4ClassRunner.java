@@ -1,13 +1,16 @@
 package com.acoderx.repeat.junit.runners;
 
 import com.acoderx.repeat.junit.Before;
+import com.acoderx.repeat.junit.Rule;
 import com.acoderx.repeat.junit.Test;
+import com.acoderx.repeat.junit.rules.TestRule;
 import com.acoderx.repeat.junit.runner.Description;
 import com.acoderx.repeat.junit.runner.notification.RunNotifier;
 import com.acoderx.repeat.junit.runners.statements.InvokeMethod;
 import com.acoderx.repeat.junit.runners.statements.RunBefores;
 import com.acoderx.repeat.junit.runners.statements.Statement;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +58,7 @@ public class BlockJUnit4ClassRunner extends ParentRunner<Method> {
             Object target = getTestClass().newInstance();
             Statement statement = new InvokeMethod(child, target);
             statement = withBefores(target, statement);
+            statement = withRules(target, statement);
             statement.evaluate();
         } catch (Throwable throwable) {
             notifier.fireTestFailure(throwable);
@@ -82,6 +86,29 @@ public class BlockJUnit4ClassRunner extends ParentRunner<Method> {
         }
         if (beforeMethods.size() > 0) {
             statement = new RunBefores(beforeMethods, target, statement);
+        }
+        return statement;
+    }
+
+    private Statement withRules(Object target, Statement statement) {
+        List<TestRule> rules = new ArrayList<>();
+        Field[] fields = getTestClass().getFields();
+        for (Field field : fields) {
+            if (field.getAnnotation(Rule.class)!=null) {
+                try {
+                    Object fieldValue = field.get(target);
+                    if (fieldValue instanceof TestRule) {
+                        rules.add((TestRule) fieldValue);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (rules.size() > 0) {
+            for (TestRule rule : rules) {
+                statement = rule.apply(statement);
+            }
         }
         return statement;
     }

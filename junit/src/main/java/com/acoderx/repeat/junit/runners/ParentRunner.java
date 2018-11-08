@@ -8,7 +8,6 @@ import com.acoderx.repeat.junit.runner.manipulation.Filter;
 import com.acoderx.repeat.junit.runner.manipulation.Filterable;
 import com.acoderx.repeat.junit.runner.notification.RunNotifier;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -81,7 +80,7 @@ public abstract class ParentRunner<T> implements Runner, Filterable {
         while (iterator.hasNext()) {
             T each = iterator.next();
             if (shouldRun(filter, each)) {
-                //如果该子测试项不需要过滤，则尝试递归过滤该子测试项的子测试项
+                //如果该子测试项没有被过滤，则尝试递归过滤该子测试项的子测试项
                 filter.apply(each);
             } else {
                 iterator.remove();

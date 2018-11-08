@@ -16,6 +16,6 @@ public class JunitCoreTest {
         System.out.println("------------------");
         JunitCore.run(Request.classes(UserServiceTest.class));
         System.out.println("------------------");
-        JunitCore.run(Request.method(UserServiceTest.class,"sumUserNum"));
+        JunitCore.run(Request.method(UserServiceTest.class,"sumUserNumTimeOut"));
     }
 }

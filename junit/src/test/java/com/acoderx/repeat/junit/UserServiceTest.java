@@ -1,5 +1,9 @@
 package com.acoderx.repeat.junit;
 
+import com.acoderx.repeat.junit.rules.TimeOut;
+
+import java.util.concurrent.TimeUnit;
+
 /**
  * Description:
  *
@@ -7,6 +11,9 @@ package com.acoderx.repeat.junit;
  * @since: 2018-10-25
  */
 public class UserServiceTest {
+    @Rule
+    public TimeOut timeOut = new TimeOut(1, TimeUnit.SECONDS);
+
     UserService userService = new UserService();
     @Test
     public void sumUserNum() {
@@ -21,5 +28,12 @@ public class UserServiceTest {
     @Before
     public void sumUserNumBefore() {
         System.out.println("before method run...");
+    }
+
+    @Test
+    public void sumUserNumTimeOut() throws InterruptedException {
+        System.out.println("start sumUserNumTimeOut...now sleep 2s");
+        TimeUnit.SECONDS.sleep(2);
+        System.out.println(userService.sumUserNum());
     }
 }
