@@ -9,9 +9,14 @@ import com.acoderx.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import com.acoderx.beans.factory.support.DefaultListableBeanFactory;
 import com.acoderx.beans.factory.support.RootBeanDefinition;
 import com.aoderx.spring.context.ApplicationContext;
+import com.aoderx.spring.context.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.*;
 
 /**
  * Description:
@@ -31,6 +36,12 @@ public class AnnotationConfigApplicationContext implements ApplicationContext, B
         refresh();
     }
 
+    public AnnotationConfigApplicationContext(String... basePackage) {
+        this();
+        scan(basePackage);
+        refresh();
+    }
+
 
     public AnnotationConfigApplicationContext() {
         this.beanFactory = new DefaultListableBeanFactory();
@@ -46,7 +57,66 @@ public class AnnotationConfigApplicationContext implements ApplicationContext, B
     public void register(Class... classes) {
         for (Class aClass : classes) {
             AnnotatedBeanDefinition beanDefinition = new AnnotatedBeanDefinition(aClass);
-            this.registerBeanDefinition(aClass.getName(), beanDefinition);
+            registerBeanDefinition(aClass.getName(), beanDefinition);
+        }
+    }
+
+    public void scan(String... basePackage) {
+        for (String s : basePackage) {
+            doScan(s);
+        }
+    }
+
+    private void doScan(String s) {
+        Set<Class> classes = getClasses(s);
+        for (Class aClass : classes) {
+            Annotation[] annotations = aClass.getAnnotations();
+            for (Annotation annotation : annotations) {
+                if (annotation.annotationType().isAnnotationPresent(Component.class)) {
+                    registerBeanDefinition(aClass.getName(), new AnnotatedBeanDefinition(aClass));
+                }
+            }
+        }
+    }
+
+    private static Set<Class> getClasses(String pack) {
+        Set<Class> classes = new LinkedHashSet<>();
+        String resource = pack.replaceAll("\\.", "\\/");
+        try {
+            Enumeration<URL> urls = ClassLoader.getSystemResources(resource);
+            while (urls.hasMoreElements()) {
+                URL url = urls.nextElement();
+                if ("file".equals(url.getProtocol())) {
+                    String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
+                    // 以文件的方式扫描整个包下的文件 并添加到集合中
+                    findAndAddClassesInPackageByFile(pack, filePath, classes);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return classes;
+    }
+    private static void findAndAddClassesInPackageByFile(String packageName, String packagePath, Set<Class> classes) {
+        File dir = new File(packagePath);
+        if (!dir.exists() || !dir.isDirectory()) {
+            return;
+        }
+        File[] dirfiles = dir.listFiles(file -> file.isDirectory() || (file.getName().endsWith(".class")));
+        if (null != dirfiles && dirfiles.length > 0) {
+            for (File file : dirfiles) {
+                // 如果是目录
+                if (file.isDirectory()) {
+                    findAndAddClassesInPackageByFile(packageName + "." + file.getName(), file.getAbsolutePath(), classes);
+                } else {
+                    String className = file.getName().substring(0, file.getName().length() - 6);
+                    try {
+                        classes.add(Thread.currentThread().getContextClassLoader().loadClass(packageName + '.' + className));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
