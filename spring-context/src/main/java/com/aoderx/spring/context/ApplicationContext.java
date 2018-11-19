@@ -1,7 +1,5 @@
 package com.aoderx.spring.context;
 
-import com.acoderx.beans.factory.BeanFactory;
-
 /**
  * Description:
  *
@@ -9,4 +7,5 @@ import com.acoderx.beans.factory.BeanFactory;
  * @since: 2018-11-09
  */
 public interface ApplicationContext {
+    void refresh();
 }

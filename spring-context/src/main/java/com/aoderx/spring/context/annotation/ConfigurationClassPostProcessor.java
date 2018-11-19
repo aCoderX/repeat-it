@@ -1,9 +1,10 @@
 package com.aoderx.spring.context.annotation;
 
+import com.acoderx.beans.factory.BeanFactory;
 import com.acoderx.beans.factory.annotation.AnnotatedBeanDefinition;
 import com.acoderx.beans.factory.config.BeanDefinition;
+import com.acoderx.beans.factory.support.BeanDefinitionRegistry;
 import com.acoderx.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import com.acoderx.beans.factory.support.DefaultListableBeanFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -16,12 +17,11 @@ import java.lang.reflect.Method;
  */
 public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor {
     @Override
-    public void postProcessBeanFactory(DefaultListableBeanFactory beanFactory) {
-
+    public void postProcessBeanFactory(BeanFactory beanFactory) {
     }
 
     @Override
-    public void postProcessBeanDefinitionRegistry(DefaultListableBeanFactory beanFactory) {
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanFactory) {
         //简单解析Configuration
         String[] names = beanFactory.getBeanDefinitionNames();
         for (String name : names) {

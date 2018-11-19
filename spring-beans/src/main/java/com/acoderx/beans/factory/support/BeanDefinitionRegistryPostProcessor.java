@@ -9,5 +9,5 @@ import com.acoderx.beans.factory.config.BeanFactoryPostProcessor;
  * @since: 2018-11-13
  */
 public interface BeanDefinitionRegistryPostProcessor extends BeanFactoryPostProcessor {
-    void postProcessBeanDefinitionRegistry(DefaultListableBeanFactory beanFactory);
+    void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanFactory);
 }

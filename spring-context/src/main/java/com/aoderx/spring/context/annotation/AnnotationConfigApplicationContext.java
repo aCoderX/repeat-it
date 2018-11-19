@@ -1,22 +1,20 @@
 package com.aoderx.spring.context.annotation;
 
-import com.acoderx.beans.factory.*;
+import com.acoderx.beans.factory.BeanFactory;
 import com.acoderx.beans.factory.annotation.AnnotatedBeanDefinition;
-import com.acoderx.beans.factory.config.BeanDefinition;
-import com.acoderx.beans.factory.config.BeanFactoryPostProcessor;
-import com.acoderx.beans.factory.support.BeanDefinitionRegistry;
-import com.acoderx.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import com.acoderx.beans.factory.support.DefaultListableBeanFactory;
 import com.acoderx.beans.factory.support.RootBeanDefinition;
-import com.aoderx.spring.context.ApplicationContext;
 import com.aoderx.spring.context.stereotype.Component;
+import com.aoderx.spring.context.support.AbstractApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Description:
@@ -24,11 +22,10 @@ import java.util.*;
  * @author: xudi
  * @since: 2018-11-09
  */
-public class AnnotationConfigApplicationContext implements ApplicationContext, BeanFactory, BeanDefinitionRegistry {
+public class AnnotationConfigApplicationContext extends AbstractApplicationContext {
 
     private DefaultListableBeanFactory beanFactory;
 
-    private List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
     public AnnotationConfigApplicationContext(Class... classes) {
         this();
@@ -57,7 +54,7 @@ public class AnnotationConfigApplicationContext implements ApplicationContext, B
     public void register(Class... classes) {
         for (Class aClass : classes) {
             AnnotatedBeanDefinition beanDefinition = new AnnotatedBeanDefinition(aClass);
-            registerBeanDefinition(aClass.getName(), beanDefinition);
+            this.beanFactory.registerBeanDefinition(aClass.getName(), beanDefinition);
         }
     }
 
@@ -73,7 +70,7 @@ public class AnnotationConfigApplicationContext implements ApplicationContext, B
             Annotation[] annotations = aClass.getAnnotations();
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType().isAnnotationPresent(Component.class)) {
-                    registerBeanDefinition(aClass.getName(), new AnnotatedBeanDefinition(aClass));
+                    this.beanFactory.registerBeanDefinition(aClass.getName(), new AnnotatedBeanDefinition(aClass));
                 }
             }
         }
@@ -120,71 +117,12 @@ public class AnnotationConfigApplicationContext implements ApplicationContext, B
         }
     }
 
-
-    public void refresh() {
-        //调用BeanFactory的后置处理器
-        //先调用BeanDefinitionRegistryPostProcessor
-        for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessors) {
-            if (beanFactoryPostProcessor instanceof BeanDefinitionRegistryPostProcessor) {
-                ((BeanDefinitionRegistryPostProcessor) beanFactoryPostProcessor).postProcessBeanDefinitionRegistry(beanFactory);
-            }
-        }
-        List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
-        String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class);
-        for (String postProcessorName : postProcessorNames) {
-            BeanDefinitionRegistryPostProcessor postProcessor = (BeanDefinitionRegistryPostProcessor) beanFactory.getBean(postProcessorName);
-            postProcessor.postProcessBeanDefinitionRegistry(beanFactory);
-            currentRegistryProcessors.add(postProcessor);
-        }
-        //后调用BeanFactoryPostProcessor
-        for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessors) {
-            beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
-        }
-        for (BeanDefinitionRegistryPostProcessor currentRegistryProcessor : currentRegistryProcessors) {
-            currentRegistryProcessor.postProcessBeanDefinitionRegistry(beanFactory);
-        }
-
-        //
-
-        //解析，加载
-
-
-
-
-        //初始化
-
-
-    }
-
-
-
     @Override
-    public BeanDefinition getBeanDefinition(String beanName) {
-        return beanFactory.getBeanDefinition(beanName);
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
     }
 
     @Override
-    public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
-        beanFactory.registerBeanDefinition(beanName, beanDefinition);
-    }
-
-    @Override
-    public String[] getBeanDefinitionNames() {
-        return beanFactory.getBeanDefinitionNames();
-    }
-
-    @Override
-    public <T> T getBean(Class<T> testBeanClass) {
-        return beanFactory.getBean(testBeanClass);
-    }
-
-    @Override
-    public Object getBean(String name) {
-        return beanFactory.getBean(name);
-    }
-
-    @Override
-    public String[] getBeanNamesForType(Class type) {
-        return beanFactory.getBeanNamesForType(type);
+    protected void refreshBeanFactory() {
     }
 }

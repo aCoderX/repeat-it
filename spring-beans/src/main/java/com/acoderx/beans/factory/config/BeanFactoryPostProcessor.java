@@ -1,6 +1,6 @@
 package com.acoderx.beans.factory.config;
 
-import com.acoderx.beans.factory.support.DefaultListableBeanFactory;
+import com.acoderx.beans.factory.BeanFactory;
 
 /**
  * Description:
@@ -9,5 +9,5 @@ import com.acoderx.beans.factory.support.DefaultListableBeanFactory;
  * @since: 2018-11-13
  */
 public interface BeanFactoryPostProcessor {
-    void postProcessBeanFactory(DefaultListableBeanFactory beanFactory);
+    void postProcessBeanFactory(BeanFactory beanFactory);
 }
