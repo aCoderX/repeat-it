@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author: xudi
  * @since: 2018-11-12
  */
-public class DefaultListableBeanFactory implements BeanFactory, BeanDefinitionRegistry {
+public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
 
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
@@ -27,7 +27,18 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanDefinitionRe
 
     @Override
     public Object getBean(String name) {
-        return doCreateBean(beanDefinitionMap.get(name));
+        BeanDefinition beanDefinition = beanDefinitionMap.get(name);
+        Object bean;
+        if (beanDefinition.isSingleton()) {
+            bean = getSingleton(name);
+            if (bean==null) {
+                bean = doCreateBean(beanDefinition);
+                registerSingleton(name,bean);
+            }
+        } else {
+            bean = doCreateBean(beanDefinition);
+        }
+        return bean;
     }
 
     private Object doCreateBean(BeanDefinition beanDefinition) {

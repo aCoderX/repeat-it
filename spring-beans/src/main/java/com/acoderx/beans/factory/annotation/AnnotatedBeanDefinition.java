@@ -1,6 +1,6 @@
 package com.acoderx.beans.factory.annotation;
 
-import com.acoderx.beans.factory.config.BeanDefinition;
+import com.acoderx.beans.factory.support.AbstractBeanDefinition;
 
 import java.lang.annotation.Annotation;
 
@@ -10,18 +10,12 @@ import java.lang.annotation.Annotation;
  * @author: xudi
  * @since: 2018-11-13
  */
-public class AnnotatedBeanDefinition implements BeanDefinition {
-    private Class aClass;
+public class AnnotatedBeanDefinition extends AbstractBeanDefinition {
     private Annotation[] annotations;
 
     public AnnotatedBeanDefinition(Class aClass) {
-        this.aClass = aClass;
+        super(aClass);
         annotations = aClass.getAnnotations();
-    }
-
-    @Override
-    public Class getBeanClass() {
-        return aClass;
     }
 
     public Annotation[] getAnnotations() {

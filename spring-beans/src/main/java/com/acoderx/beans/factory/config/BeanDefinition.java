@@ -8,4 +8,6 @@ package com.acoderx.beans.factory.config;
  */
 public interface BeanDefinition {
     Class getBeanClass();
+
+    boolean isSingleton();
 }

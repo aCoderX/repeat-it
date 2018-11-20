@@ -14,8 +14,10 @@ public class AnnotationConfigApplicationContextTest {
     @Test
     public void testScan(){
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.aoderx.spring.context.annotation");
-        TestBean testBean = applicationContext.getBean(TestBean.class);
-        System.out.println(testBean.getFoo());
+        TestBean testBean1 = applicationContext.getBean(TestBean.class);
+        TestBean testBean2 = applicationContext.getBean(TestBean.class);
+        System.out.println(testBean1);
+        System.out.println(testBean2);
     }
 
 
