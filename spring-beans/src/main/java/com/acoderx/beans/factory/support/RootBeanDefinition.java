@@ -1,5 +1,7 @@
 package com.acoderx.beans.factory.support;
 
+import java.util.Map;
+
 /**
  * Description:
  *
@@ -12,4 +14,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
         super(aClass);
     }
 
+    public RootBeanDefinition(Class aClass, Map<String, Object> propertyValues) {
+        super(aClass, propertyValues);
+    }
 }

@@ -1,5 +1,7 @@
 package com.acoderx.beans.factory.config;
 
+import java.util.Map;
+
 /**
  * Description:
  *
@@ -7,7 +9,12 @@ package com.acoderx.beans.factory.config;
  * @since: 2018-11-12
  */
 public interface BeanDefinition {
+    String SCOPE_SINGLETON = "singleton";
+    String SCOPE_PROTOTYPE = "prototype";
+
     Class getBeanClass();
 
     boolean isSingleton();
+
+    Map<String, Object> getPropertyValues();
 }

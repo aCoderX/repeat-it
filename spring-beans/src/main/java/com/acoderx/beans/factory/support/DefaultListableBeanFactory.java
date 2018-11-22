@@ -1,8 +1,13 @@
 package com.acoderx.beans.factory.support;
 
-import com.acoderx.beans.factory.BeanFactory;
 import com.acoderx.beans.factory.config.BeanDefinition;
+import com.acoderx.beans.factory.config.ConfigurableListableBeanFactory;
+import com.acoderx.beans.factory.config.RuntimeBeanReference;
+import com.acoderx.beans.factory.config.TypedStringValue;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author: xudi
  * @since: 2018-11-12
  */
-public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
+public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableListableBeanFactory, BeanDefinitionRegistry {
 
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
@@ -45,22 +50,46 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
         //实例化
         Object o = null;
         try {
-            o = beanDefinition.getBeanClass().newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+            Constructor constructor = beanDefinition.getBeanClass().getDeclaredConstructor();
+            constructor.setAccessible(true);
+            o = constructor.newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }
 
         //填充属性
+        populateBean(o,beanDefinition);
 
         //初始化
-
 
         return o;
     }
 
+    private void populateBean(Object o, BeanDefinition beanDefinition) {
+        Map<String,Object> props = beanDefinition.getPropertyValues();
+        //转换props，转成bean
+        applyPropertyValues(beanDefinition.getPropertyValues());
+        //设置属性
+        props.forEach((k,v)->{
+            try {
+                Field field = o.getClass().getDeclaredField(k);
+                field.setAccessible(true);
+                field.set(o, v);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
+    private void applyPropertyValues(Map<String,Object> props) {
+        props.forEach((name,value)->{
+            if(value instanceof RuntimeBeanReference){
+                props.put(name, getBean(((RuntimeBeanReference) value).getBeanName()));
+            } else if (value instanceof TypedStringValue) {
+                props.put(name,((TypedStringValue) value).getValue());
+            }
+        });
+    }
 
     @Override
     public String[] getBeanNamesForType(Class type) {
@@ -74,6 +103,15 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
         String[] s = new String[names.size()];
         names.toArray(s);
         return s;
+    }
+
+    @Override
+    public void preInstantiateSingletons() {
+        beanDefinitionMap.forEach((k,v)->{
+            if (v.isSingleton()) {
+                getBean(k);
+            }
+        });
     }
 
     @Override

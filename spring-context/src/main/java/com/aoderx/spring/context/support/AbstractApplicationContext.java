@@ -1,7 +1,7 @@
 package com.aoderx.spring.context.support;
 
-import com.acoderx.beans.factory.BeanFactory;
 import com.acoderx.beans.factory.config.BeanFactoryPostProcessor;
+import com.acoderx.beans.factory.config.ConfigurableListableBeanFactory;
 import com.acoderx.beans.factory.support.BeanDefinitionRegistry;
 import com.acoderx.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import com.aoderx.spring.context.ApplicationContext;
@@ -15,11 +15,11 @@ import java.util.List;
  * @author: xudi
  * @since: 2018-11-19
  */
-public abstract class AbstractApplicationContext implements ApplicationContext, BeanFactory{
+public abstract class AbstractApplicationContext implements ApplicationContext{
 
     private List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
-    public abstract BeanFactory getBeanFactory();
+    public abstract ConfigurableListableBeanFactory getBeanFactory();
 
     protected abstract void refreshBeanFactory();
 
@@ -32,22 +32,26 @@ public abstract class AbstractApplicationContext implements ApplicationContext, 
         //解析，加载
 
         //获取beanFactory
-        BeanFactory beanFactory = obtainFreshBeanFactory();
+        ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
         //调用BeanFactory的后置处理器
         invokeBeanFactoryPostProcessors(beanFactory);
 
         //初始化
-
+        finishBeanFactoryInitialization(beanFactory);
 
     }
 
-    protected BeanFactory obtainFreshBeanFactory() {
+    protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory){
+        beanFactory.preInstantiateSingletons();
+    }
+
+    protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
         refreshBeanFactory();
         return getBeanFactory();
     }
 
-    protected void invokeBeanFactoryPostProcessors(BeanFactory beanFactory) {
+    protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         if (beanFactory instanceof BeanDefinitionRegistry) {
             BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
             //先调用BeanDefinitionRegistryPostProcessor

@@ -19,6 +19,12 @@
             <version>${acoderx.spring.versoin}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.acoderx</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${acoderx.spring.versoin}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

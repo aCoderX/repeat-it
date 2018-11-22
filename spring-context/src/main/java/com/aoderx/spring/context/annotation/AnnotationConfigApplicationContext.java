@@ -1,7 +1,7 @@
 package com.aoderx.spring.context.annotation;
 
-import com.acoderx.beans.factory.BeanFactory;
 import com.acoderx.beans.factory.annotation.AnnotatedBeanDefinition;
+import com.acoderx.beans.factory.config.ConfigurableListableBeanFactory;
 import com.acoderx.beans.factory.support.DefaultListableBeanFactory;
 import com.acoderx.beans.factory.support.RootBeanDefinition;
 import com.aoderx.spring.context.stereotype.Component;
@@ -118,7 +118,7 @@ public class AnnotationConfigApplicationContext extends AbstractApplicationConte
     }
 
     @Override
-    public BeanFactory getBeanFactory() {
+    public ConfigurableListableBeanFactory getBeanFactory() {
         return beanFactory;
     }
 
