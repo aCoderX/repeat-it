@@ -36,7 +36,10 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
                             Annotation a = method.getAnnotation(Bean.class);
                             if (a != null) {
                                 Class returnClass = method.getReturnType();
-                                beanFactory.registerBeanDefinition(returnClass.getName(), new AnnotatedBeanDefinition(returnClass));
+                                AnnotatedBeanDefinition b = new AnnotatedBeanDefinition(returnClass);
+                                b.setFactoryMethod(method);
+                                b.setFactoryMethodName(beanDefinition.getBeanClass().getName());
+                                beanFactory.registerBeanDefinition(returnClass.getName(), b);
                             }
                         }
                     }

@@ -9,7 +9,18 @@ package com.aoderx.spring.context;
 public class FooService {
     private TestBean testBean;
 
+    public FooService() {
+    }
+
+    public FooService(TestBean testBean) {
+        this.testBean = testBean;
+    }
+
     public void bar() {
         System.out.println("in fooService:"+testBean.getFoo());
+    }
+
+    public TestBean getTestBean() {
+        return testBean;
     }
 }

@@ -8,6 +8,7 @@ import com.acoderx.beans.factory.config.TypedStringValue;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,14 +49,7 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
 
     private Object doCreateBean(BeanDefinition beanDefinition) {
         //实例化
-        Object o = null;
-        try {
-            Constructor constructor = beanDefinition.getBeanClass().getDeclaredConstructor();
-            constructor.setAccessible(true);
-            o = constructor.newInstance();
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        Object o = createBeanInstance(beanDefinition);
 
         //填充属性
         populateBean(o,beanDefinition);
@@ -65,8 +59,31 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
         return o;
     }
 
+    private Object createBeanInstance(BeanDefinition beanDefinition) {
+        Object o = null;
+        try {
+            if (beanDefinition.getFactoryMethodName() != null) {
+                //如果是通过方法创建的
+                String factoryMethodName = beanDefinition.getFactoryMethodName();
+                Method method = beanDefinition.getFactoryMethod();
+                method.setAccessible(true);
+                return method.invoke(getBean(factoryMethodName));
+            }
+            Constructor constructor = beanDefinition.getBeanClass().getDeclaredConstructor();
+            constructor.setAccessible(true);
+            o = constructor.newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
+
+
     private void populateBean(Object o, BeanDefinition beanDefinition) {
         Map<String,Object> props = beanDefinition.getPropertyValues();
+        if (props == null) {
+            return;
+        }
         //转换props，转成bean
         applyPropertyValues(beanDefinition.getPropertyValues());
         //设置属性

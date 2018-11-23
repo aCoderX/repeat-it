@@ -1,5 +1,6 @@
 package com.acoderx.beans.factory.config;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -17,4 +18,9 @@ public interface BeanDefinition {
     boolean isSingleton();
 
     Map<String, Object> getPropertyValues();
+
+    String getFactoryMethodName();
+
+    Method getFactoryMethod();
+
 }
