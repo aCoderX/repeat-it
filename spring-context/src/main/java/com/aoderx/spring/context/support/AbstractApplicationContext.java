@@ -1,6 +1,7 @@
 package com.aoderx.spring.context.support;
 
 import com.acoderx.beans.factory.config.BeanFactoryPostProcessor;
+import com.acoderx.beans.factory.config.BeanPostProcessor;
 import com.acoderx.beans.factory.config.ConfigurableListableBeanFactory;
 import com.acoderx.beans.factory.support.BeanDefinitionRegistry;
 import com.acoderx.beans.factory.support.BeanDefinitionRegistryPostProcessor;
@@ -37,9 +38,19 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
         //调用BeanFactory的后置处理器
         invokeBeanFactoryPostProcessors(beanFactory);
 
+        //注册BeanPostProcessor
+        registerBeanPostProcessors(beanFactory);
+
         //初始化
         finishBeanFactoryInitialization(beanFactory);
 
+    }
+
+    protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory){
+        String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class);
+        for (String postProcessorName : postProcessorNames) {
+            beanFactory.addBeanPostProcessor((BeanPostProcessor) beanFactory.getBean(postProcessorName));
+        }
     }
 
     protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory){

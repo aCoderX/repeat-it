@@ -10,4 +10,6 @@ import com.acoderx.beans.factory.BeanFactory;
  */
 public interface ConfigurableListableBeanFactory extends BeanFactory {
     void preInstantiateSingletons();
+
+    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 }

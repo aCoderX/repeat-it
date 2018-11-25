@@ -1,9 +1,6 @@
 package com.acoderx.beans.factory.support;
 
-import com.acoderx.beans.factory.config.BeanDefinition;
-import com.acoderx.beans.factory.config.ConfigurableListableBeanFactory;
-import com.acoderx.beans.factory.config.RuntimeBeanReference;
-import com.acoderx.beans.factory.config.TypedStringValue;
+import com.acoderx.beans.factory.config.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -24,6 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableListableBeanFactory, BeanDefinitionRegistry {
 
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
+
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     @Override
     public <T> T getBean(Class<T> testBeanClass) {
@@ -80,22 +79,27 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
 
 
     private void populateBean(Object o, BeanDefinition beanDefinition) {
-        Map<String,Object> props = beanDefinition.getPropertyValues();
-        if (props == null) {
-            return;
-        }
-        //转换props，转成bean
-        applyPropertyValues(beanDefinition.getPropertyValues());
-        //设置属性
-        props.forEach((k,v)->{
-            try {
-                Field field = o.getClass().getDeclaredField(k);
-                field.setAccessible(true);
-                field.set(o, v);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(o, beanDefinition);
             }
-        });
+        }
+        Map<String,Object> props = beanDefinition.getPropertyValues();
+        if (props != null) {
+            //转换props，转成bean
+            applyPropertyValues(beanDefinition.getPropertyValues());
+            //设置属性
+            props.forEach((k,v)->{
+                try {
+                    Field field = o.getClass().getDeclaredField(k);
+                    field.setAccessible(true);
+                    field.set(o, v);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     private void applyPropertyValues(Map<String,Object> props) {
@@ -129,6 +133,15 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
                 getBean(k);
             }
         });
+    }
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+        beanPostProcessors.add(beanPostProcessor);
+    }
+
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return beanPostProcessors;
     }
 
     @Override

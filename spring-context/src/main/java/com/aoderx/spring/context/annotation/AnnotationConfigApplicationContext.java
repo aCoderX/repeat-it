@@ -1,6 +1,7 @@
 package com.aoderx.spring.context.annotation;
 
 import com.acoderx.beans.factory.annotation.AnnotatedBeanDefinition;
+import com.acoderx.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import com.acoderx.beans.factory.config.ConfigurableListableBeanFactory;
 import com.acoderx.beans.factory.support.DefaultListableBeanFactory;
 import com.acoderx.beans.factory.support.RootBeanDefinition;
@@ -49,6 +50,8 @@ public class AnnotationConfigApplicationContext extends AbstractApplicationConte
     private void registerAnnotationConfigProcessors() {
         beanFactory.registerBeanDefinition(ConfigurationClassPostProcessor.class.getName(),
                 new RootBeanDefinition(ConfigurationClassPostProcessor.class));
+        beanFactory.registerBeanDefinition(AutowiredAnnotationBeanPostProcessor.class.getName(),
+                new RootBeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     public void register(Class... classes) {
