@@ -1,4 +1,7 @@
-package com.aoderx.spring.context;
+package com.aoderx.spring.context.entity;
+
+import com.acoderx.beans.factory.annotation.Autowired;
+import com.aoderx.spring.context.stereotype.Component;
 
 /**
  * Description:
@@ -6,7 +9,9 @@ package com.aoderx.spring.context;
  * @author: xudi
  * @since: 2018-11-22
  */
+@Component
 public class FooService {
+    @Autowired
     private TestBean testBean;
 
     public FooService() {

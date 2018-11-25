@@ -1,5 +1,7 @@
 package com.acoderx.beans.factory.support;
 
+import com.acoderx.beans.factory.Aware;
+import com.acoderx.beans.factory.BeanFactoryAware;
 import com.acoderx.beans.factory.config.*;
 
 import java.lang.reflect.Constructor;
@@ -54,8 +56,21 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
         populateBean(o,beanDefinition);
 
         //初始化
+        initializeBean(o, beanDefinition);
 
         return o;
+    }
+
+    private void initializeBean(Object o, BeanDefinition beanDefinition) {
+        invokeAwareMethods(o, beanDefinition);
+    }
+
+    private void invokeAwareMethods(Object o, BeanDefinition beanDefinition) {
+        if (o instanceof Aware) {
+            if (o instanceof BeanFactoryAware) {
+                ((BeanFactoryAware) o).setBeanFactory(this);
+            }
+        }
     }
 
     private Object createBeanInstance(BeanDefinition beanDefinition) {

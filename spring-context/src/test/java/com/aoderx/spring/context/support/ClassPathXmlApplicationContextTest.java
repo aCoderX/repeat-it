@@ -1,7 +1,7 @@
 package com.aoderx.spring.context.support;
 
-import com.aoderx.spring.context.FooService;
-import com.aoderx.spring.context.TestBean;
+import com.aoderx.spring.context.entity.FooService;
+import com.aoderx.spring.context.entity.TestBean;
 import org.junit.Test;
 
 public class ClassPathXmlApplicationContextTest {

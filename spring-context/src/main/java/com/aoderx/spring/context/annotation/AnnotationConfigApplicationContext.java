@@ -3,6 +3,8 @@ package com.aoderx.spring.context.annotation;
 import com.acoderx.beans.factory.annotation.AnnotatedBeanDefinition;
 import com.acoderx.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import com.acoderx.beans.factory.config.ConfigurableListableBeanFactory;
+import com.acoderx.beans.factory.support.BeanNameGenerator;
+import com.acoderx.beans.factory.support.DefaultBeanNameGenerator;
 import com.acoderx.beans.factory.support.DefaultListableBeanFactory;
 import com.acoderx.beans.factory.support.RootBeanDefinition;
 import com.aoderx.spring.context.stereotype.Component;
@@ -26,6 +28,8 @@ import java.util.Set;
 public class AnnotationConfigApplicationContext extends AbstractApplicationContext {
 
     private DefaultListableBeanFactory beanFactory;
+
+    private BeanNameGenerator beanNameGenerator = new DefaultBeanNameGenerator();
 
 
     public AnnotationConfigApplicationContext(Class... classes) {
@@ -57,7 +61,7 @@ public class AnnotationConfigApplicationContext extends AbstractApplicationConte
     public void register(Class... classes) {
         for (Class aClass : classes) {
             AnnotatedBeanDefinition beanDefinition = new AnnotatedBeanDefinition(aClass);
-            this.beanFactory.registerBeanDefinition(aClass.getName(), beanDefinition);
+            this.beanFactory.registerBeanDefinition(beanNameGenerator.generateBeanName(beanDefinition), beanDefinition);
         }
     }
 
@@ -70,10 +74,14 @@ public class AnnotationConfigApplicationContext extends AbstractApplicationConte
     private void doScan(String s) {
         Set<Class> classes = getClasses(s);
         for (Class aClass : classes) {
+            if(aClass.isInterface()){
+                return;
+            }
             Annotation[] annotations = aClass.getAnnotations();
             for (Annotation annotation : annotations) {
-                if (annotation.annotationType().isAnnotationPresent(Component.class)) {
-                    this.beanFactory.registerBeanDefinition(aClass.getName(), new AnnotatedBeanDefinition(aClass));
+                if (annotation.annotationType().equals(Component.class)||annotation.annotationType().isAnnotationPresent(Component.class)) {
+                    AnnotatedBeanDefinition beanDefinition = new AnnotatedBeanDefinition(aClass);
+                    this.beanFactory.registerBeanDefinition(beanNameGenerator.generateBeanName(beanDefinition), beanDefinition);
                 }
             }
         }

@@ -5,6 +5,8 @@ import com.acoderx.beans.factory.annotation.AnnotatedBeanDefinition;
 import com.acoderx.beans.factory.config.BeanDefinition;
 import com.acoderx.beans.factory.support.BeanDefinitionRegistry;
 import com.acoderx.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import com.acoderx.beans.factory.support.BeanNameGenerator;
+import com.acoderx.beans.factory.support.DefaultBeanNameGenerator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -16,6 +18,7 @@ import java.lang.reflect.Method;
  * @since: 2018-11-13
  */
 public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor {
+    private BeanNameGenerator beanNameGenerator = new DefaultBeanNameGenerator();
     @Override
     public void postProcessBeanFactory(BeanFactory beanFactory) {
     }
@@ -38,8 +41,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
                                 Class returnClass = method.getReturnType();
                                 AnnotatedBeanDefinition b = new AnnotatedBeanDefinition(returnClass);
                                 b.setFactoryMethod(method);
-                                b.setFactoryMethodName(beanDefinition.getBeanClass().getName());
-                                beanFactory.registerBeanDefinition(returnClass.getName(), b);
+                                b.setFactoryMethodName(beanNameGenerator.generateBeanName(beanDefinition));
+                                beanFactory.registerBeanDefinition(beanNameGenerator.generateBeanName(b), b);
                             }
                         }
                     }

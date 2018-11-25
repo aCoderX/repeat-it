@@ -1,7 +1,7 @@
 package com.aoderx.spring.context.annotation;
 
-import com.aoderx.spring.context.FooService;
-import com.aoderx.spring.context.TestBean;
+import com.aoderx.spring.context.entity.FooService;
+import com.aoderx.spring.context.entity.TestBean;
 import org.junit.Test;
 
 public class AnnotationConfigApplicationContextTest {
@@ -12,8 +12,11 @@ public class AnnotationConfigApplicationContextTest {
         System.out.println(testBean.getFoo());
     }
 
+    /**
+     * 测试扫描configuration注解
+     */
     @Test
-    public void testScan(){
+    public void testScanConfigration(){
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.aoderx.spring.context.annotation");
         TestBean testBean = applicationContext.getBean(TestBean.class);
         FooService fooService = applicationContext.getBean(FooService.class);
@@ -23,13 +26,14 @@ public class AnnotationConfigApplicationContextTest {
         System.out.println(fooService.getTestBean());
     }
 
+    /**
+     * 测试扫描component
+     */
     @Test
-    public void testScanSingleton(){
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.aoderx.spring.context.annotation");
-        TestBean testBean1 = applicationContext.getBean(TestBean.class);
-        TestBean testBean2 = applicationContext.getBean(TestBean.class);
-        System.out.println(testBean1);
-        System.out.println(testBean2);
+    public void testScan(){
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.aoderx.spring.context.entity");
+        FooService fooService = applicationContext.getBean(FooService.class);
+        System.out.println(fooService.getTestBean().getFoo());
     }
 
 
