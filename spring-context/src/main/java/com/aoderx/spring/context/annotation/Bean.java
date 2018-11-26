@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description:
+ * Description:在@Configuration中定义Bean
  *
  * @author  xudi
  * @since  2018-11-13

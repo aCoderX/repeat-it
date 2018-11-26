@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description:
+ * Description:默认的ApplicationContext实现
  *
  * @author  xudi
  * @since  2018-11-19

@@ -9,7 +9,7 @@ import com.acoderx.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import java.lang.reflect.Field;
 
 /**
- * Description:
+ * Description:用于被Autowired的参数注入
  *
  * @author  xudi
  * @since  2018-11-23

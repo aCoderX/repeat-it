@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * Description:
+ * Description:bean的定义
  *
  * @author  xudi
  * @since  2018-11-12

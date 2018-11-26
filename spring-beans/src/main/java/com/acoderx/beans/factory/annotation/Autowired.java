@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description:
+ * Description:用于注入
  *
  * @author  xudi
  * @since  2018-11-25

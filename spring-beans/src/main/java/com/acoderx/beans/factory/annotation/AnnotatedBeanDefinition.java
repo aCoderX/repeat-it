@@ -5,7 +5,7 @@ import com.acoderx.beans.factory.support.AbstractBeanDefinition;
 import java.lang.annotation.Annotation;
 
 /**
- * Description:
+ * Description:注解bean的定义
  *
  * @author  xudi
  * @since  2018-11-13

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Description:
+ * Description:解析xml的ApplicationContext
  *
  * @author  xudi
  * @since  2018-11-16
@@ -49,6 +49,10 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
         }
     }
 
+    /**
+     * 解析configLocations，解析为beanDefinition并注册
+     * @param beanFactory
+     */
     protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) {
         DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
         try {
@@ -75,6 +79,11 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
         }
     }
 
+    /**
+     * 解析默认的元素（beans、bean）
+     * @param element
+     * @param registry
+     */
     private void parseDefaultElement(Element element,BeanDefinitionRegistry registry) {
         if ("bean".equals(element.getTagName())) {
             String id = element.getAttribute("id");

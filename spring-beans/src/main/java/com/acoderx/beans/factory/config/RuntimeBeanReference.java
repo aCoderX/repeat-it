@@ -1,7 +1,7 @@
 package com.acoderx.beans.factory.config;
 
 /**
- * Description:
+ * Description:运行时存储bean的引用
  *
  * @author  xudi
  * @since  2018-11-22

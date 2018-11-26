@@ -12,7 +12,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * Description:
+ * Description:用于解析@Configuration注解标注的类，将被@Bean注解的内容解析为BeanDefinition，并注册
  *
  * @author  xudi
  * @since  2018-11-13
@@ -40,6 +40,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
                             if (a != null) {
                                 Class returnClass = method.getReturnType();
                                 AnnotatedBeanDefinition b = new AnnotatedBeanDefinition(returnClass);
+                                //决定了使用工厂方法来创建
                                 b.setFactoryMethod(method);
                                 b.setFactoryMethodName(beanNameGenerator.generateBeanName(beanDefinition));
                                 beanFactory.registerBeanDefinition(beanNameGenerator.generateBeanName(b), b);

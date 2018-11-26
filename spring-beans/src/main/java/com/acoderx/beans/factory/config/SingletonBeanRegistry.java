@@ -1,7 +1,7 @@
 package com.acoderx.beans.factory.config;
 
 /**
- * Description:
+ * Description:单例的bean的注册接口
  *
  * @author  xudi
  * @since  2018-11-20

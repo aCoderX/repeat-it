@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description:
+ * Description:标识被spring管理的类，会被AnnotationConfigApplicationContext扫描时获取
  *
  * @author  xudi
  * @since  2018-11-15

@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * Description:
+ * Description:BeanDefinition的默认实现
  *
  * @author  xudi
  * @since  2018-11-20
@@ -16,7 +16,9 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
     private Class aClass;
     private String scope = SCOPE_SINGLETON;
     private Map<String, Object> propertyValues;
+    //工厂方法所在工厂
     private Method factoryMethod;
+    //是否由工厂方法生成
     private String factoryMethodName;
 
     public AbstractBeanDefinition(Class aClass) {

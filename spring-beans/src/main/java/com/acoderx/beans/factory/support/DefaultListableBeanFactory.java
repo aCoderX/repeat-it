@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Description:
+ * Description:bean工厂默认实现，主要的Bean的处理都由它完成
  *
  * @author  xudi
  * @since  2018-11-12

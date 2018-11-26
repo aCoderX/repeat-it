@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description:
+ * Description:配置Bean，会被ConfigurationClassPostProcessor扫描并解析
  *
  * @author  xudi
  * @since  2018-11-13

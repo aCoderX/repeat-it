@@ -20,7 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Description:
+ * Description:注解的应用上下文，可用于扫描某一包下所有bean或者解析@Configuration注解的bean
  *
  * @author  xudi
  * @since  2018-11-09
