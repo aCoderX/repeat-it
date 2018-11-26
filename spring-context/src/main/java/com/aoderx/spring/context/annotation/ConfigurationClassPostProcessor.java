@@ -14,8 +14,8 @@ import java.lang.reflect.Method;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-13
+ * @author  xudi
+ * @since  2018-11-13
  */
 public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor {
     private BeanNameGenerator beanNameGenerator = new DefaultBeanNameGenerator();

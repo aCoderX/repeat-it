@@ -9,8 +9,8 @@ import com.acoderx.repeat.junit.runner.requests.FilterRequest;
 /**
  * Description:一次测试请求,直接决定了生成什么runner
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public abstract class Request {
     public abstract Runner getRunner();

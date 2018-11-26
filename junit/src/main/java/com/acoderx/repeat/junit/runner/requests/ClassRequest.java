@@ -7,8 +7,8 @@ import com.acoderx.repeat.junit.runners.BlockJUnit4ClassRunner;
 /**
  * Description:单个类的测试请求
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public class ClassRequest extends Request {
     private final Class<?> fTestClass;

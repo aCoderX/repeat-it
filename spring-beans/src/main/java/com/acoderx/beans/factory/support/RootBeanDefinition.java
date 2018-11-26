@@ -5,8 +5,8 @@ import java.util.Map;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-13
+ * @author  xudi
+ * @since  2018-11-13
  */
 public class RootBeanDefinition extends AbstractBeanDefinition {
 

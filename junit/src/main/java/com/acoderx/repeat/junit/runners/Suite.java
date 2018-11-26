@@ -10,8 +10,8 @@ import java.util.List;
  * Description:多个测试类的抽象
  * 设计模式：composite模式中的父节点（Composite），包含多个子节点（如：BlockJUnit4ClassRunner）
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public class Suite extends ParentRunner<Runner> {
     private List<Runner> runners;

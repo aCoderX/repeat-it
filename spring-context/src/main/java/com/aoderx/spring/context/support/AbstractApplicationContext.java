@@ -13,8 +13,8 @@ import java.util.List;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-19
+ * @author  xudi
+ * @since  2018-11-19
  */
 public abstract class AbstractApplicationContext implements ApplicationContext{
 

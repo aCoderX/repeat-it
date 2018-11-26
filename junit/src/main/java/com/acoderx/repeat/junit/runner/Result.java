@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Description:返回结果
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public class Result {
     private List<Throwable> failure = new ArrayList<>();

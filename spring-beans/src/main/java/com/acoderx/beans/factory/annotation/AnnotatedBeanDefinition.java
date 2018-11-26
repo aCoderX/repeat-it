@@ -7,8 +7,8 @@ import java.lang.annotation.Annotation;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-13
+ * @author  xudi
+ * @since  2018-11-13
  */
 public class AnnotatedBeanDefinition extends AbstractBeanDefinition {
     private Annotation[] annotations;

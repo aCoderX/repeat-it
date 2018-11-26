@@ -5,8 +5,8 @@ import com.acoderx.beans.factory.config.BeanDefinition;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-13
+ * @author  xudi
+ * @since  2018-11-13
  */
 public interface BeanDefinitionRegistry {
     BeanDefinition getBeanDefinition(String beanName);

@@ -5,8 +5,8 @@ import com.acoderx.repeat.junit.runner.Description;
 /**
  * Description: 一些常用的过滤器工厂
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public class Filters {
     /**

@@ -5,8 +5,8 @@ import com.acoderx.repeat.junit.runner.Description;
 /**
  * Description:过滤器
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public abstract class Filter {
     public boolean apply(Object each){

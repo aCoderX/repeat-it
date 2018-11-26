@@ -6,8 +6,8 @@ import com.aoderx.spring.context.stereotype.Component;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-22
+ * @author  xudi
+ * @since  2018-11-22
  */
 @Component
 public class FooService {

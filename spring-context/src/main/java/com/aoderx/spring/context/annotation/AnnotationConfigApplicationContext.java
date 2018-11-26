@@ -22,8 +22,8 @@ import java.util.Set;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-09
+ * @author  xudi
+ * @since  2018-11-09
  */
 public class AnnotationConfigApplicationContext extends AbstractApplicationContext {
 

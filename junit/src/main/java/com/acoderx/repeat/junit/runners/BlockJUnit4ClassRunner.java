@@ -19,8 +19,8 @@ import java.util.List;
  * Description:runner的实现，用来抽象类层次的runner，会包含多个子测试项（被@Test注解了的方法）
  * 设计模式：composite中的子节点
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public class BlockJUnit4ClassRunner extends ParentRunner<Method> {
 

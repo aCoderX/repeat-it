@@ -6,8 +6,8 @@ import java.util.List;
 /**
  * Description: statement的装饰者，会在被装饰者前运行方法
  *
- * @author: xudi
- * @since: 2018-10-30
+ * @author  xudi
+ * @since  2018-10-30
  */
 public class RunBefores extends Statement {
     private List<Method> methodList;

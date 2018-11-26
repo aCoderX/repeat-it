@@ -5,8 +5,8 @@ package com.acoderx.repeat.junit.runner.notification;
  * 设计模式：
  *  观察者模式：观察者Observer
  *
- * @author: xudi
- * @since: 2018-10-30
+ * @author  xudi
+ * @since  2018-10-30
  */
 public interface RunListener {
     //整个测试任务开始

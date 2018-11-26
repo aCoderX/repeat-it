@@ -7,8 +7,8 @@ import com.acoderx.repeat.junit.runner.Runner;
 /**
  * Description:装饰器，给request增加过略器
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public class FilterRequest extends Request {
 

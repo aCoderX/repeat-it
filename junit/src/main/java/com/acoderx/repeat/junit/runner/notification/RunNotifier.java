@@ -8,8 +8,8 @@ import java.util.List;
  * 设计模式：
  *  观察者模式：被观察对象(subject)
  *
- * @author: xudi
- * @since: 2018-10-30
+ * @author  xudi
+ * @since  2018-10-30
  */
 public class RunNotifier {
     List<RunListener> listeners = new ArrayList<>();

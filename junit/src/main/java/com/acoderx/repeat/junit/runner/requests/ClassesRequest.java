@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * Description:多个类的测试请求
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public class ClassesRequest extends Request {
     private List<Runner> runners = new ArrayList<>();

@@ -5,8 +5,8 @@ import java.util.concurrent.*;
 /**
  * Description: statement的装饰者，超时退出
  *
- * @author: xudi
- * @since: 2018-10-30
+ * @author  xudi
+ * @since  2018-10-30
  */
 public class FailOnTimeOut extends Statement {
 

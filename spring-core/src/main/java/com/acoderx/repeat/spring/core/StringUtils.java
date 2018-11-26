@@ -3,8 +3,8 @@ package com.acoderx.repeat.spring.core;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-22
+ * @author  xudi
+ * @since  2018-11-22
  */
 public class StringUtils {
     public static boolean isEmpty(Object str) {

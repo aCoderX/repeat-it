@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 /**
  * Description:最简单的实现
  *
- * @author: xudi
- * @since: 2018-10-26
+ * @author  xudi
+ * @since  2018-10-26
  */
 public class JUnitCore {
 

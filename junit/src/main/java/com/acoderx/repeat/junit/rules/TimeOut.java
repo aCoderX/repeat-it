@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Description: rule：超时结束
  *
- * @author: xudi
- * @since: 2018-11-08
+ * @author  xudi
+ * @since  2018-11-08
  */
 public class TimeOut implements TestRule {
     private final long timeout;

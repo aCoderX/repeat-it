@@ -8,8 +8,8 @@ import java.util.Map;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-20
+ * @author  xudi
+ * @since  2018-11-20
  */
 public abstract class AbstractBeanDefinition implements BeanDefinition {
 

@@ -5,8 +5,8 @@ import com.acoderx.beans.factory.BeanFactory;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-22
+ * @author  xudi
+ * @since  2018-11-22
  */
 public interface ConfigurableListableBeanFactory extends BeanFactory {
     void preInstantiateSingletons();

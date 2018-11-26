@@ -5,8 +5,8 @@ import java.io.Serializable;
 /**
  * Description:对于测试项目的描述
  *
- * @author: xudi
- * @since: 2018-10-29
+ * @author  xudi
+ * @since  2018-10-29
  */
 public class Description {
     private final String fDisplayName;

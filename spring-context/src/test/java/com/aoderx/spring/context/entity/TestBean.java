@@ -5,8 +5,8 @@ import com.aoderx.spring.context.stereotype.Component;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-09
+ * @author  xudi
+ * @since  2018-11-09
  */
 @Component
 public class TestBean {

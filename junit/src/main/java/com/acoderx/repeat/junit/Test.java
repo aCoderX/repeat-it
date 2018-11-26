@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Description:标注被测试的方法
  *
- * @author: xudi
- * @since: 2018-10-26
+ * @author  xudi
+ * @since  2018-10-26
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

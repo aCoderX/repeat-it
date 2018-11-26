@@ -7,8 +7,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-10-25
+ * @author  xudi
+ * @since  2018-10-25
  */
 public class UserServiceTest {
     @Rule

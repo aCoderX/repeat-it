@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * Description:
  *
- * @author: xudi
- * @since: 2018-11-12
+ * @author  xudi
+ * @since  2018-11-12
  */
 public interface BeanDefinition {
     String SCOPE_SINGLETON = "singleton";
