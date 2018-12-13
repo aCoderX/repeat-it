@@ -10,7 +10,11 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
     private String[] configLocations;
 
     protected String[] getConfigLocations() {
-        return configLocations;
+        return configLocations!=null?configLocations: getDefaultConfigLocations();
+    }
+
+    protected String[] getDefaultConfigLocations(){
+        return null;
     }
 
     public void setConfigLocations(String[] configLocations) {
