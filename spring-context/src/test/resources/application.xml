@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-    <bean id="testBean" class="com.aoderx.spring.context.entity.TestBean"><property name="foo" value="2"/></bean>
-    <bean id="fooService" class="com.aoderx.spring.context.entity.FooService"><property name="testBean" ref="testBean"/></bean>
+    <bean id="testBean" class="com.acoderx.spring.context.entity.TestBean"><property name="foo" value="2"/></bean>
+    <bean id="fooService" class="com.acoderx.spring.context.entity.FooService"><property name="testBean" ref="testBean"/></bean>
 </beans>

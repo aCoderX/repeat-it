@@ -5,7 +5,7 @@ import com.acoderx.beans.factory.config.TypedStringValue;
 import com.acoderx.beans.factory.support.BeanDefinitionReader;
 import com.acoderx.beans.factory.support.BeanDefinitionRegistry;
 import com.acoderx.beans.factory.support.RootBeanDefinition;
-import com.acoderx.repeat.spring.core.StringUtils;
+import com.acoderx.repeat.spring.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,6 +27,7 @@ import java.util.Map;
  */
 public class XmlBeanDefinitionReader implements BeanDefinitionReader {
     private final BeanDefinitionRegistry registry;
+    private NamespaceHandlerResolver namespaceHandlerResolver = new DefaultNamespaceHandlerResolver();
 
     public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
         this.registry = registry;
@@ -36,6 +37,8 @@ public class XmlBeanDefinitionReader implements BeanDefinitionReader {
     public void loadBeanDefinition(String location) {
         try {
             DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
+            //需要开启对xml命名空间的支持
+            df.setNamespaceAware(true);
             DocumentBuilder db = df.newDocumentBuilder();
             Document document = db.parse(ClassLoader.getSystemResourceAsStream(location));
             Element root = document.getDocumentElement();
@@ -51,9 +54,24 @@ public class XmlBeanDefinitionReader implements BeanDefinitionReader {
             Node node = nodeList.item(i);
             if (node instanceof Element) {
                 Element element = (Element) node;
-                parseDefaultElement(element,registry);
+                parseBeanDefinition(element,registry);
             }
         }
+    }
+
+
+    private void parseBeanDefinition(Element element, BeanDefinitionRegistry registry) {
+        if (element.getNamespaceURI() != null) {
+            parseCustomElement(element,registry);
+        } else {
+            parseDefaultElement(element,registry);
+        }
+    }
+
+    private void parseCustomElement(Element element,BeanDefinitionRegistry registry) {
+        //如果是自定义的标签，这里只做简单判断
+        NamespaceHandler handler = namespaceHandlerResolver.resolve(element.getNamespaceURI());
+        handler.parse(element, new ParserContext(registry));
     }
 
     /**
