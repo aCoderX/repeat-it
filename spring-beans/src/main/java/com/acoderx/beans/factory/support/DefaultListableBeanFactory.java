@@ -29,7 +29,10 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
     @Override
     public <T> T getBean(Class<T> testBeanClass) {
         String[] beanName = getBeanNamesForType(testBeanClass);
-        return (T) getBean(beanName[0]);
+        if (beanName.length > 0) {
+            return (T) getBean(beanName[0]);
+        }
+        throw new RuntimeException(testBeanClass.getName()+" can't found");
     }
 
     @Override

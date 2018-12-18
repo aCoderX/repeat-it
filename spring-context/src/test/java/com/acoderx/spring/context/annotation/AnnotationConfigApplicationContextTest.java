@@ -14,11 +14,21 @@ public class AnnotationConfigApplicationContextTest {
     }
 
     /**
-     * 测试扫描configuration注解
+     * 测试@ComponentScan注解
+     */
+    @Test
+    public void testComponentScanConfigRegister(){
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(ComponentScanTestConfig.class);
+        TestBean testBean = applicationContext.getBean(TestBean.class);
+        Assert.assertEquals("foo",testBean.getFoo());
+    }
+
+    /**
+     * 测试扫描@configuration注解
      */
     @Test
     public void testScanConfigration(){
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.aoderx.spring.context.annotation");
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.acoderx.spring.context.annotation");
         TestBean testBean = applicationContext.getBean(TestBean.class);
         FooService fooService = applicationContext.getBean(FooService.class);
         Assert.assertEquals("configSet",testBean.getFoo());
@@ -26,7 +36,7 @@ public class AnnotationConfigApplicationContextTest {
     }
 
     /**
-     * 测试扫描component
+     * 测试扫描@component
      */
     @Test
     public void testScan(){
@@ -49,5 +59,10 @@ public class AnnotationConfigApplicationContextTest {
         public FooService fooService() {
             return new FooService(testBean());
         }
+    }
+
+    @Configuration
+    @ComponentScan
+    static class ComponentScanTestConfig {
     }
 }
