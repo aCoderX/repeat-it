@@ -12,4 +12,6 @@ public interface BeanFactory {
     Object getBean(String name);
 
     String[] getBeanNamesForType(Class type);
+
+    Class<?> getType(String name);
 }

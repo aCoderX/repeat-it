@@ -20,6 +20,7 @@ public class ClassPathXmlApplicationContext extends AbstractRefreshableConfigApp
      * 解析configLocations，解析为beanDefinition并注册
      * @param beanFactory
      */
+    @Override
     protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) {
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
         for (String configLocation : getConfigLocations()) {

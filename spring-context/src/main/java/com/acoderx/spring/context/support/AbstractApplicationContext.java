@@ -1,5 +1,6 @@
 package com.acoderx.spring.context.support;
 
+import com.acoderx.beans.factory.BeanFactory;
 import com.acoderx.beans.factory.config.BeanFactoryPostProcessor;
 import com.acoderx.beans.factory.config.BeanPostProcessor;
 import com.acoderx.beans.factory.config.ConfigurableListableBeanFactory;
@@ -13,10 +14,12 @@ import java.util.List;
 /**
  * Description:默认的ApplicationContext实现
  *
- * @author  xudi
- * @since  2018-11-19
+ * @author xudi
+ * @since 2018-11-19
  */
-public abstract class AbstractApplicationContext implements ApplicationContext{
+public abstract class AbstractApplicationContext implements ApplicationContext {
+
+    private ApplicationContext parent;
 
     private List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
@@ -46,14 +49,14 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 
     }
 
-    protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory){
+    protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class);
         for (String postProcessorName : postProcessorNames) {
             beanFactory.addBeanPostProcessor((BeanPostProcessor) beanFactory.getBean(postProcessorName));
         }
     }
 
-    protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory){
+    protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
         beanFactory.preInstantiateSingletons();
     }
 
@@ -93,6 +96,21 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
     }
 
     @Override
+    public ApplicationContext getParent() {
+        return parent;
+    }
+
+    @Override
+    public void setParent(ApplicationContext applicationContext) {
+        this.parent = applicationContext;
+    }
+
+    @Override
+    public BeanFactory getParentBeanFactory() {
+        return getParent();
+    }
+
+    @Override
     public <T> T getBean(Class<T> testBeanClass) {
         return getBeanFactory().getBean(testBeanClass);
     }
@@ -107,4 +125,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
         return getBeanFactory().getBeanNamesForType(type);
     }
 
+    @Override
+    public Class<?> getType(String name) {
+        return getBeanFactory().getType(name);
+    }
 }

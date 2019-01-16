@@ -1,8 +1,11 @@
 package com.acoderx.beans.factory.support;
 
 import com.acoderx.beans.factory.Aware;
+import com.acoderx.beans.factory.BeanFactory;
 import com.acoderx.beans.factory.BeanFactoryAware;
+import com.acoderx.beans.factory.InitializingBean;
 import com.acoderx.beans.factory.config.*;
+import com.acoderx.repeat.spring.util.ArrayUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -21,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since  2018-11-12
  */
 public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableListableBeanFactory, BeanDefinitionRegistry {
+    private BeanFactory parentBeanFactory;
 
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
@@ -37,13 +41,17 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
 
     @Override
     public Object getBean(String name) {
+        Object parentBean = getParentBeanFactory().getBean(name);
+        if (parentBean != null) {
+            return parentBean;
+        }
         BeanDefinition beanDefinition = beanDefinitionMap.get(name);
         Object bean;
         if (beanDefinition.isSingleton()) {
             bean = getSingleton(name);
-            if (bean==null) {
+            if (bean == null) {
                 bean = doCreateBean(beanDefinition);
-                registerSingleton(name,bean);
+                registerSingleton(name, bean);
             }
         } else {
             bean = doCreateBean(beanDefinition);
@@ -66,6 +74,9 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
 
     private void initializeBean(Object o, BeanDefinition beanDefinition) {
         invokeAwareMethods(o, beanDefinition);
+        if (o instanceof InitializingBean) {
+            ((InitializingBean) o).afterPropertiesSet();
+        }
     }
 
     private void invokeAwareMethods(Object o, BeanDefinition beanDefinition) {
@@ -132,7 +143,7 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
 
     @Override
     public String[] getBeanNamesForType(Class type) {
-
+        String[] beanNamesForType = getParentBeanFactory().getBeanNamesForType(type);
         List<String> names = new ArrayList<>();
         beanDefinitionMap.forEach((k, v) -> {
             if (type.isAssignableFrom(v.getBeanClass())) {
@@ -140,8 +151,17 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
             }
         });
         String[] s = new String[names.size()];
-        names.toArray(s);
-        return s;
+        return ArrayUtils.concat(s,beanNamesForType);
+    }
+
+    @Override
+    public Class<?> getType(String name) {
+        Class<?> type = getParentBeanFactory().getType(name);
+        if (type != null) {
+            return type;
+        }
+        BeanDefinition beanDefinition = beanDefinitionMap.get(name);
+        return beanDefinition.getBeanClass();
     }
 
     @Override
@@ -178,5 +198,14 @@ public class DefaultListableBeanFactory extends DefaultSingletonBeanRegistry imp
         String[] s = new String[c.size()];
         c.toArray(s);
         return s;
+    }
+
+    @Override
+    public BeanFactory getParentBeanFactory() {
+        return parentBeanFactory;
+    }
+
+    public void setParentBeanFactory(BeanFactory parentBeanFactory) {
+        this.parentBeanFactory = parentBeanFactory;
     }
 }

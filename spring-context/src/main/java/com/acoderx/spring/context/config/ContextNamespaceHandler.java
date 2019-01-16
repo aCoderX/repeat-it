@@ -12,6 +12,7 @@ import com.acoderx.spring.context.annotation.ComponentScanBeanDefinitionParser;
 public class ContextNamespaceHandler extends NamespaceHandlerSupport {
     @Override
     public void init() {
+        //注册自动扫描
         registerBeanDefinitionParser("component-scan", new ComponentScanBeanDefinitionParser());
     }
 }
