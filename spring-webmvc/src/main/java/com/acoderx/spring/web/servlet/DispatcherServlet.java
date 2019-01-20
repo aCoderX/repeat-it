@@ -6,6 +6,8 @@ import com.acoderx.spring.web.context.support.XmlWebApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description:
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 public class DispatcherServlet extends HttpServlet {
     //默认的配置文件后缀
     public static final String DEFAULT_CONFIG_SUFFIX = "-servlet";
+
+    private List<HandlerMapping> handlerMappings = new ArrayList<>();
 
     @Override
     public void init() throws ServletException {
@@ -31,7 +35,30 @@ public class DispatcherServlet extends HttpServlet {
         });
 
         Object attribute = getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-        webApplicationContext.setParent(((ApplicationContext) attribute));
+        if (attribute != null) {
+            webApplicationContext.setParent(((ApplicationContext) attribute));
+        }
         webApplicationContext.refresh();
+        //初始化handlerMappings
+        onRefresh(webApplicationContext);
+    }
+
+    private void onRefresh(ApplicationContext context) {
+        initStrategies(context);
+    }
+
+    private void initStrategies(ApplicationContext context) {
+        initHandlerMapping(context);
+    }
+
+
+    private void initHandlerMapping(ApplicationContext context) {
+        String[] beanNamesForType = context.getBeanNamesForType(HandlerMapping.class);
+        for (String s : beanNamesForType) {
+            HandlerMapping bean = (HandlerMapping) context.getBean(s);
+            if (bean != null) {
+                handlerMappings.add(bean);
+            }
+        }
     }
 }
