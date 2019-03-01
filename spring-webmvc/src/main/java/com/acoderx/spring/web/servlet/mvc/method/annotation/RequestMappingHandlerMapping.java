@@ -1,4 +1,4 @@
-package com.acoderx.spring.web.servlet.mvc.method;
+package com.acoderx.spring.web.servlet.mvc.method.annotation;
 
 import com.acoderx.beans.factory.BeanFactory;
 import com.acoderx.beans.factory.BeanFactoryAware;
@@ -6,6 +6,7 @@ import com.acoderx.beans.factory.InitializingBean;
 import com.acoderx.spring.web.bind.annotation.RequestMapping;
 import com.acoderx.spring.web.method.HandlerMethod;
 import com.acoderx.spring.web.servlet.HandlerMapping;
+import com.acoderx.spring.web.servlet.mvc.method.RequestMappingInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -19,12 +20,17 @@ import java.util.Map;
  * @since 2019-01-16
  */
 public class RequestMappingHandlerMapping implements HandlerMapping , InitializingBean , BeanFactoryAware {
-    private Map<String, HandlerMethod> mappingRegistry = new LinkedHashMap<>();
+    private Map<RequestMappingInfo, HandlerMethod> mappingRegistry = new LinkedHashMap<>();
     private BeanFactory beanFactory;
     @Override
     public HandlerMethod getHandler(HttpServletRequest request) {
-        String servletPath = request.getServletPath();
-        return mappingRegistry.get(servletPath);
+        //Spring在这优先完全匹配，之后尝试占位符匹配
+        for (RequestMappingInfo requestMappingInfo : mappingRegistry.keySet()) {
+            if (requestMappingInfo.match(request)) {
+                return mappingRegistry.get(requestMappingInfo);
+            }
+        }
+        return null;
     }
 
     /**
@@ -53,7 +59,8 @@ public class RequestMappingHandlerMapping implements HandlerMapping , Initializi
             if (annotation != null) {
                 HandlerMethod handlerMethod = new HandlerMethod();
                 handlerMethod.setMethod(method);
-                mappingRegistry.put(annotation.value(), handlerMethod);
+                handlerMethod.setBean(beanFactory.getBean(type));
+                mappingRegistry.put(new RequestMappingInfo(annotation.method(),annotation.value()), handlerMethod);
             }
         }
     }

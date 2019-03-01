@@ -1,5 +1,7 @@
 package com.acoderx.spring.web.bind.annotation;
 
+import com.acoderx.spring.http.HttpMethod;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,4 +17,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
     String value();
+
+    HttpMethod method();
 }
