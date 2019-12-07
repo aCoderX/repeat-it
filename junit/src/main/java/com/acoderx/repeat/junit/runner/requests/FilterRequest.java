@@ -5,7 +5,7 @@ import com.acoderx.repeat.junit.runner.Request;
 import com.acoderx.repeat.junit.runner.Runner;
 
 /**
- * Description:装饰器，给request增加过略器
+ * Description:装饰器，给request增加过略器,比如根据方法名过滤某测试类需要执行的方法
  *
  * @author  xudi
  * @since  2018-10-29

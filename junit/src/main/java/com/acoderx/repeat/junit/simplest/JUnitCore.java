@@ -5,7 +5,7 @@ import com.acoderx.repeat.junit.Test;
 import java.lang.reflect.Method;
 
 /**
- * Description:最简单的实现
+ * Description:最简单的实现,直接通过反射拿出所有需要执行的方法进行执行
  *
  * @author  xudi
  * @since  2018-10-26

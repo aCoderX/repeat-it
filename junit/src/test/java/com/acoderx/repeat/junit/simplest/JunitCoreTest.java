@@ -2,6 +2,10 @@ package com.acoderx.repeat.junit.simplest;
 
 import com.acoderx.repeat.junit.UserServiceTest;
 
+
+/**
+ * 最简单的实现测试，直接通过反射拿出所有方法进行运行
+ */
 public class JunitCoreTest {
     public static void main(String[] args) {
         runAll();
